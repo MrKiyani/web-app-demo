@@ -14,7 +14,7 @@ pipeline {
                 echo 'Building the Docker image...'
                 script {
                     // Build the Docker image
-                    sh "docker build -t webapp-demo ."
+                    sh "docker build -t webapp-demo . -f Dockerfile"
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
                 echo 'Deploying the application...'
                 script {
                     // Run the Docker container
-                    sh "docker run -d -p 8090:80 webapp-demo"
+                    sh "docker run -d -p 8090:8000 webapp-demo"
                 }
             }
         }
