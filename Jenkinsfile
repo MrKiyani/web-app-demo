@@ -1,23 +1,30 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Clone Repository') {
+        stage('Clone') {
             steps {
-                git 'https://github.com/MrKiyani/web-app-demo.git'
+                echo 'Cloning the repository...'
+                git url: 'https://github.com/MrKiyani/web-app-demo.git'
             }
         }
-        stage('Build Docker Image') {
+        
+        stage('Build') {
             steps {
+                echo 'Building the Docker image...'
                 script {
-                    docker.build('adminturneddevops/go-webapp-sample')
+                    // Build the Docker image
+                    sh "docker build -t webapp-demo ."
                 }
             }
         }
+        
         stage('Deploy') {
             steps {
+                echo 'Deploying the application...'
                 script {
-                    docker.image('adminturneddevops/go-webapp-sample').withRun('-p 8090:8000')
+                    // Run the Docker container
+                    sh "docker run -d -p 8090:80 webapp-demo"
                 }
             }
         }
